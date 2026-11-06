@@ -1,0 +1,20 @@
+name: Sync Releases and APKs
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # 每 6 小时自动检查一次原作者有没有发布新版 APK
+  workflow_dispatch: # 允许你在 Fork 仓库网页上点击按钮手动触发同步
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 必须赋予写入权限以创建 Release 并上传 APK
+
+    steps:
+      - name: Run GitHub Release Sync Action
+        uses: kittaakos/github-release-sync-action@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: "pengchujin"  # 已自动为你填写原作者名
+          repo: "aerial-tv"    # 已自动为你填写原仓库名
