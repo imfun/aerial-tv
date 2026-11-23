@@ -300,7 +300,7 @@ fun HomeScreen(
     val appContext = LocalContext.current
     val firmwareInputPanel = remember {
         SystemProbe.tclInputPanel(appContext) != null || SystemProbe.coocaaInputPanel(appContext) ||
-            SystemProbe.tianciInputPanel(appContext)
+            SystemProbe.tianciInputPanel(appContext) || SystemProbe.tclSourceManagerPanel(appContext)
     }
 
     var focusedKey by remember { mutableStateOf<String?>(null) }
@@ -1121,6 +1121,8 @@ fun HomeScreen(
                 else vm.whenUnlocked { AerialSettings.chooseHomeLocked(false); vm.overlay = Overlay.Wallpaper }
             },
             onKids = vm::setUpKidsMode,
+            homeStatus = vm.homeStatus,
+            onUpdate = { vm.overlay = Overlay.ControlCenter(CcPage.Update) },
             onStartScreensaver = {
                 vm.overlay = Overlay.None
                 onStartScreensaver()
